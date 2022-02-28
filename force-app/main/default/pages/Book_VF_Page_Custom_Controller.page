@@ -1,0 +1,72 @@
+<apex:page controller="Book_Custom_Controller">
+    <apex:form>
+        <apex:actionFunction name="unIssuedBookCountJS"
+                             action="{!unIssuedBookCount}"
+                             reRender="genre-panel">
+            <apex:param name="bkRecId"
+                        assignTo="{!bookCopiesWrapper.bookRecordId}"
+                        value=""/>
+        </apex:actionFunction>
+    </apex:form>
+
+    <!-- html table with book records -->
+    <apex:dataTable value="{!books}" var="b" border="1" cellpadding="5px">
+        <apex:column>
+            <apex:facet name="header">Book name</apex:facet>
+            <apex:outputText value="{!b.Name}"/>
+        </apex:column>
+        <apex:column>
+            <apex:facet name="header">Genre</apex:facet>
+            <apex:outputPanel onmousemove="unIssuedBookCountJS('{!b.Id}')"
+                              id="genre-panel"
+                              title="This book has {!bookCopiesWrapper.bookCopyUnIssuedQty} un-issued copies">
+                <apex:outputText value="{!b.genre__C}"/>
+            </apex:outputPanel>
+        </apex:column>
+        <apex:column>
+            <apex:facet name="header">Quantity</apex:facet>
+            <apex:outputText value="{!b.quantity__C}"/>
+        </apex:column>
+        <apex:column>
+            <apex:facet name="header">Author count</apex:facet>
+            <apex:form>
+                <apex:outputPanel id="author-count-panel">
+                    <apex:actionSupport action="{!borrowerTrend}" 
+                                        event="onmousemove"
+                                        reRender="author-count-panel">
+                        <apex:param name="bkRecId" 
+                                    assignTo="{!borrowerTrendWrapper.bookRecordId}"
+                                    value="{!b.Id}"/>
+                    </apex:actionSupport>
+                    <apex:outputText value="{!b.number_of_authors__C}"
+                                    title="This book has been borrrowed {!borrowerTrendWrapper.borrowerCount} times in the past year!"/>
+                </apex:outputPanel>
+            </apex:form>
+        </apex:column>
+    </apex:dataTable>
+    <apex:form>
+        <apex:inputHidden value="{!startingFrom}"/> 
+        <apex:panelGrid columns="2" cellpadding="2px" style="font-size:12pt">
+            <apex:commandLink action="{!previous}">Previous</apex:commandLink>
+            <apex:commandLink action="{!next}">Next</apex:commandLink>
+        </apex:panelGrid>
+    </apex:form>
+
+    <!-- a html form to create/update a book record -->
+    <apex:pageMessages/>
+    <apex:form>
+        <apex:panelGrid columns="2">
+            <apex:outputText value="Name of the book"/>
+            <apex:inputField value="{!book.Name}"/>
+            <apex:outputText value="Genre"/>
+            <apex:inputField value="{!book.genre__C}"/>
+            <apex:outputText value="Description"/>
+            <apex:inputField value="{!book.description__C}"/>
+            <apex:outputText value="Quantity"/>
+            <apex:inputField value="{!book.quantity__c}"/>
+            
+            <apex:commandButton action="{!save}" value="Save book now!"/>
+        </apex:panelGrid>
+
+    </apex:form>
+</apex:page>

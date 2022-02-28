@@ -1,0 +1,10 @@
+<apex:page >
+<apex:includeScript value="{!$Resource.myscript}"/>
+<h1>Congratulations!This is a visualforce page</h1>
+<p> This is my first VF page </p>
+<p>The current user logged in is {!$User.firstname}</p>
+<apex:detail inlineEdit="true" 
+             relatedList="false"
+             oncomplete="themessage()"/>
+
+</apex:page>

@@ -1,0 +1,25 @@
+<apex:page standardController="Book__c">
+    <apex:form>
+        <apex:pageBlock>
+            <apex:messages/>
+            <apex:pageBlockSection title="Create a new book" collapsible="false"> 
+                Hello {!$User.FirstName}
+            </apex:pageBlockSection>
+            <apex:pageBlockSection title="Book details">
+                <apex:panelGrid columns="2">
+                    <apex:outputText value="Name"/>
+                    <apex:inputField value="{!book__C.name}"/>
+                    <apex:outputText value="Genre"/>
+                    <apex:inputField value="{!book__C.genre__C}"/>
+                    <apex:outputText value="Description"/>
+                    <apex:inputField value="{!book__C.description__c}"/>
+                    <apex:outputText value="Quantity"/>
+                    <apex:inputField value="{!book__C.quantity__C}"/>
+                </apex:panelGrid>
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons>
+                <apex:commandButton action="{!save}" value="Save this book!"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
